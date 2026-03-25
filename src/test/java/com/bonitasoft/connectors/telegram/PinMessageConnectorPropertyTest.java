@@ -51,7 +51,7 @@ class PinMessageConnectorPropertyTest {
         return inputs;
     }
 
-    @Property
+    @Example
     void mandatoryMessageIdRejectsNull() {
         var connector = new PinMessageConnector();
         var inputs = validInputs();
@@ -62,7 +62,7 @@ class PinMessageConnectorPropertyTest {
                 .hasMessageContaining("messageId");
     }
 
-    @Property
+    @Property(tries = 50)
     void mandatoryChatIdRejectsBlank(@ForAll("blankStrings") String chatId) {
         var connector = new PinMessageConnector();
         var inputs = validInputs();
@@ -72,7 +72,7 @@ class PinMessageConnectorPropertyTest {
                 .isInstanceOf(ConnectorValidationException.class);
     }
 
-    @Property
+    @Property(tries = 50)
     void validConfigurationAlwaysBuilds(
             @ForAll("validBotTokens") String token,
             @ForAll("validChatIds") String chatId,
@@ -86,7 +86,7 @@ class PinMessageConnectorPropertyTest {
         assertThatCode(connector::validateInputParameters).doesNotThrowAnyException();
     }
 
-    @Property
+    @Property(tries = 50)
     void messageIdPositiveOnly(@ForAll @LongRange(min = 1, max = Long.MAX_VALUE) long messageId) {
         var connector = new PinMessageConnector();
         var inputs = validInputs();
@@ -95,7 +95,7 @@ class PinMessageConnectorPropertyTest {
         assertThatCode(connector::validateInputParameters).doesNotThrowAnyException();
     }
 
-    @Property
+    @Property(tries = 50)
     void disableNotificationAcceptsBothValues(@ForAll boolean disable) {
         var connector = new PinMessageConnector();
         var inputs = validInputs();
@@ -104,7 +104,7 @@ class PinMessageConnectorPropertyTest {
         assertThatCode(connector::validateInputParameters).doesNotThrowAnyException();
     }
 
-    @Property
+    @Property(tries = 50)
     void botTokenRejectsBlank(@ForAll("blankStrings") String token) {
         var connector = new PinMessageConnector();
         var inputs = validInputs();
@@ -114,7 +114,7 @@ class PinMessageConnectorPropertyTest {
                 .isInstanceOf(ConnectorValidationException.class);
     }
 
-    @Property
+    @Property(tries = 50)
     void timeoutPositiveOnly(@ForAll("positiveTimeouts") int timeout) {
         var connector = new PinMessageConnector();
         var inputs = validInputs();
@@ -124,7 +124,7 @@ class PinMessageConnectorPropertyTest {
         assertThatCode(connector::validateInputParameters).doesNotThrowAnyException();
     }
 
-    @Property
+    @Property(tries = 50)
     void defaultValuesApplied(@ForAll("validBotTokens") String token) {
         var connector = new PinMessageConnector();
         var inputs = new HashMap<String, Object>();
@@ -135,7 +135,7 @@ class PinMessageConnectorPropertyTest {
         assertThatCode(connector::validateInputParameters).doesNotThrowAnyException();
     }
 
-    @Property
+    @Property(tries = 50)
     void chatIdNegativeForGroups(@ForAll("negativeChatIdLongs") long chatId) {
         var connector = new PinMessageConnector();
         var inputs = validInputs();
@@ -144,7 +144,7 @@ class PinMessageConnectorPropertyTest {
         assertThatCode(connector::validateInputParameters).doesNotThrowAnyException();
     }
 
-    @Property
+    @Property(tries = 50)
     void messageIdAcceptsIntegerType(@ForAll @IntRange(min = 1, max = Integer.MAX_VALUE) int messageId) {
         var connector = new PinMessageConnector();
         var inputs = validInputs();
@@ -153,7 +153,7 @@ class PinMessageConnectorPropertyTest {
         assertThatCode(connector::validateInputParameters).doesNotThrowAnyException();
     }
 
-    @Property
+    @Property(tries = 50)
     void messageIdAcceptsStringType(@ForAll @LongRange(min = 1, max = 999_999_999L) long messageId) {
         var connector = new PinMessageConnector();
         var inputs = validInputs();

@@ -66,7 +66,7 @@ class SendPhotoConnectorPropertyTest {
         return inputs;
     }
 
-    @Property
+    @Property(tries = 50)
     void mandatoryPhotoUrlRejectsBlank(@ForAll("blankStrings") String url) {
         var connector = new SendPhotoConnector();
         var inputs = validInputs();
@@ -76,7 +76,7 @@ class SendPhotoConnectorPropertyTest {
                 .isInstanceOf(ConnectorValidationException.class);
     }
 
-    @Property
+    @Property(tries = 50)
     void mandatoryChatIdRejectsBlank(@ForAll("blankStrings") String chatId) {
         var connector = new SendPhotoConnector();
         var inputs = validInputs();
@@ -86,7 +86,7 @@ class SendPhotoConnectorPropertyTest {
                 .isInstanceOf(ConnectorValidationException.class);
     }
 
-    @Property
+    @Property(tries = 50)
     void validConfigurationAlwaysBuilds(
             @ForAll("validBotTokens") String token,
             @ForAll("validChatIds") String chatId,
@@ -100,7 +100,7 @@ class SendPhotoConnectorPropertyTest {
         assertThatCode(connector::validateInputParameters).doesNotThrowAnyException();
     }
 
-    @Property
+    @Property(tries = 50)
     void captionOptionalAcceptsNull(
             @ForAll("validBotTokens") String token,
             @ForAll("validChatIds") String chatId) {
@@ -114,7 +114,7 @@ class SendPhotoConnectorPropertyTest {
         assertThatCode(connector::validateInputParameters).doesNotThrowAnyException();
     }
 
-    @Property
+    @Property(tries = 50)
     void parseModeAcceptsValidValues(@ForAll("validParseModes") String parseMode) {
         var connector = new SendPhotoConnector();
         var inputs = validInputs();
@@ -123,7 +123,7 @@ class SendPhotoConnectorPropertyTest {
         assertThatCode(connector::validateInputParameters).doesNotThrowAnyException();
     }
 
-    @Property
+    @Property(tries = 50)
     void photoUrlAcceptsVariousFormats(@ForAll("validPhotoUrls") String url) {
         var connector = new SendPhotoConnector();
         var inputs = validInputs();
@@ -132,7 +132,7 @@ class SendPhotoConnectorPropertyTest {
         assertThatCode(connector::validateInputParameters).doesNotThrowAnyException();
     }
 
-    @Property
+    @Property(tries = 50)
     void captionWithVariousLengths(@ForAll("validCaptions") String caption) {
         var connector = new SendPhotoConnector();
         var inputs = validInputs();
@@ -141,7 +141,7 @@ class SendPhotoConnectorPropertyTest {
         assertThatCode(connector::validateInputParameters).doesNotThrowAnyException();
     }
 
-    @Property
+    @Property(tries = 50)
     void disableNotificationAcceptsBothValues(@ForAll boolean disable) {
         var connector = new SendPhotoConnector();
         var inputs = validInputs();
@@ -150,7 +150,7 @@ class SendPhotoConnectorPropertyTest {
         assertThatCode(connector::validateInputParameters).doesNotThrowAnyException();
     }
 
-    @Property
+    @Property(tries = 50)
     void botTokenRejectsBlank(@ForAll("blankStrings") String token) {
         var connector = new SendPhotoConnector();
         var inputs = validInputs();
@@ -160,7 +160,7 @@ class SendPhotoConnectorPropertyTest {
                 .isInstanceOf(ConnectorValidationException.class);
     }
 
-    @Property
+    @Property(tries = 50)
     void timeoutPositiveOnly(@ForAll("positiveTimeouts") int timeout) {
         var connector = new SendPhotoConnector();
         var inputs = validInputs();
@@ -170,7 +170,7 @@ class SendPhotoConnectorPropertyTest {
         assertThatCode(connector::validateInputParameters).doesNotThrowAnyException();
     }
 
-    @Property
+    @Property(tries = 50)
     void defaultParseModeIsHTML(@ForAll("validBotTokens") String token) {
         var connector = new SendPhotoConnector();
         var inputs = new HashMap<String, Object>();

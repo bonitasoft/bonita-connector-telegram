@@ -66,7 +66,7 @@ class SendDocumentConnectorPropertyTest {
         return inputs;
     }
 
-    @Property
+    @Property(tries = 50)
     void mandatoryDocumentUrlRejectsBlank(@ForAll("blankStrings") String url) {
         var connector = new SendDocumentConnector();
         var inputs = validInputs();
@@ -76,7 +76,7 @@ class SendDocumentConnectorPropertyTest {
                 .isInstanceOf(ConnectorValidationException.class);
     }
 
-    @Property
+    @Property(tries = 50)
     void mandatoryChatIdRejectsBlank(@ForAll("blankStrings") String chatId) {
         var connector = new SendDocumentConnector();
         var inputs = validInputs();
@@ -86,7 +86,7 @@ class SendDocumentConnectorPropertyTest {
                 .isInstanceOf(ConnectorValidationException.class);
     }
 
-    @Property
+    @Property(tries = 50)
     void validConfigurationAlwaysBuilds(
             @ForAll("validBotTokens") String token,
             @ForAll("validChatIds") String chatId,
@@ -100,7 +100,7 @@ class SendDocumentConnectorPropertyTest {
         assertThatCode(connector::validateInputParameters).doesNotThrowAnyException();
     }
 
-    @Property
+    @Property(tries = 50)
     void captionOptionalAcceptsNull(
             @ForAll("validBotTokens") String token,
             @ForAll("validChatIds") String chatId) {
@@ -114,7 +114,7 @@ class SendDocumentConnectorPropertyTest {
         assertThatCode(connector::validateInputParameters).doesNotThrowAnyException();
     }
 
-    @Property
+    @Property(tries = 50)
     void parseModeAcceptsValidValues(@ForAll("validParseModes") String parseMode) {
         var connector = new SendDocumentConnector();
         var inputs = validInputs();
@@ -123,7 +123,7 @@ class SendDocumentConnectorPropertyTest {
         assertThatCode(connector::validateInputParameters).doesNotThrowAnyException();
     }
 
-    @Property
+    @Property(tries = 50)
     void documentUrlAcceptsVariousFormats(@ForAll("validDocumentUrls") String url) {
         var connector = new SendDocumentConnector();
         var inputs = validInputs();
@@ -132,7 +132,7 @@ class SendDocumentConnectorPropertyTest {
         assertThatCode(connector::validateInputParameters).doesNotThrowAnyException();
     }
 
-    @Property
+    @Property(tries = 50)
     void captionWithVariousLengths(@ForAll("validCaptions") String caption) {
         var connector = new SendDocumentConnector();
         var inputs = validInputs();
@@ -141,7 +141,7 @@ class SendDocumentConnectorPropertyTest {
         assertThatCode(connector::validateInputParameters).doesNotThrowAnyException();
     }
 
-    @Property
+    @Property(tries = 50)
     void disableNotificationAcceptsBothValues(@ForAll boolean disable) {
         var connector = new SendDocumentConnector();
         var inputs = validInputs();
@@ -150,7 +150,7 @@ class SendDocumentConnectorPropertyTest {
         assertThatCode(connector::validateInputParameters).doesNotThrowAnyException();
     }
 
-    @Property
+    @Property(tries = 50)
     void botTokenRejectsBlank(@ForAll("blankStrings") String token) {
         var connector = new SendDocumentConnector();
         var inputs = validInputs();
@@ -160,7 +160,7 @@ class SendDocumentConnectorPropertyTest {
                 .isInstanceOf(ConnectorValidationException.class);
     }
 
-    @Property
+    @Property(tries = 50)
     void timeoutPositiveOnly(@ForAll("positiveTimeouts") int timeout) {
         var connector = new SendDocumentConnector();
         var inputs = validInputs();
@@ -170,7 +170,7 @@ class SendDocumentConnectorPropertyTest {
         assertThatCode(connector::validateInputParameters).doesNotThrowAnyException();
     }
 
-    @Property
+    @Property(tries = 50)
     void defaultParseModeIsHTML(@ForAll("validBotTokens") String token) {
         var connector = new SendDocumentConnector();
         var inputs = new HashMap<String, Object>();

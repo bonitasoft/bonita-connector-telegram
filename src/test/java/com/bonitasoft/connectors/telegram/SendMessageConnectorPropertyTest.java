@@ -63,7 +63,7 @@ class SendMessageConnectorPropertyTest {
         return inputs;
     }
 
-    @Property
+    @Property(tries = 50)
     void mandatoryTextRejectsBlank(@ForAll("blankStrings") String text) {
         var connector = new SendMessageConnector();
         var inputs = validInputs();
@@ -73,7 +73,7 @@ class SendMessageConnectorPropertyTest {
                 .isInstanceOf(ConnectorValidationException.class);
     }
 
-    @Property
+    @Property(tries = 50)
     void mandatoryChatIdRejectsBlank(@ForAll("blankStrings") String chatId) {
         var connector = new SendMessageConnector();
         var inputs = validInputs();
@@ -83,7 +83,7 @@ class SendMessageConnectorPropertyTest {
                 .isInstanceOf(ConnectorValidationException.class);
     }
 
-    @Property
+    @Property(tries = 50)
     void mandatoryBotTokenRejectsBlank(@ForAll("blankStrings") String token) {
         var connector = new SendMessageConnector();
         var inputs = validInputs();
@@ -93,7 +93,7 @@ class SendMessageConnectorPropertyTest {
                 .isInstanceOf(ConnectorValidationException.class);
     }
 
-    @Property
+    @Property(tries = 50)
     void validConfigurationAlwaysBuilds(
             @ForAll("validBotTokens") String token,
             @ForAll("validChatIds") String chatId,
@@ -107,7 +107,7 @@ class SendMessageConnectorPropertyTest {
         assertThatCode(connector::validateInputParameters).doesNotThrowAnyException();
     }
 
-    @Property
+    @Property(tries = 50)
     void parseModeAcceptsValidValues(@ForAll("validParseModes") String parseMode) {
         var connector = new SendMessageConnector();
         var inputs = validInputs();
@@ -116,7 +116,7 @@ class SendMessageConnectorPropertyTest {
         assertThatCode(connector::validateInputParameters).doesNotThrowAnyException();
     }
 
-    @Property
+    @Property(tries = 50)
     void disableNotificationAcceptsBothValues(@ForAll boolean disable) {
         var connector = new SendMessageConnector();
         var inputs = validInputs();
@@ -125,7 +125,7 @@ class SendMessageConnectorPropertyTest {
         assertThatCode(connector::validateInputParameters).doesNotThrowAnyException();
     }
 
-    @Property
+    @Property(tries = 50)
     void textMaxLengthAcceptsUpTo4096(
             @ForAll @IntRange(min = 1, max = 4096) int length) {
         var connector = new SendMessageConnector();
@@ -135,7 +135,7 @@ class SendMessageConnectorPropertyTest {
         assertThatCode(connector::validateInputParameters).doesNotThrowAnyException();
     }
 
-    @Property
+    @Property(tries = 50)
     void textExceeding4096IsRejected(
             @ForAll @IntRange(min = 4097, max = 5000) int length) {
         var connector = new SendMessageConnector();
@@ -147,7 +147,7 @@ class SendMessageConnectorPropertyTest {
                 .hasMessageContaining("4096");
     }
 
-    @Property
+    @Property(tries = 50)
     void chatIdNegativeForGroups(@ForAll("negativeChatIdLongs") long chatId) {
         var connector = new SendMessageConnector();
         var inputs = validInputs();
@@ -156,7 +156,7 @@ class SendMessageConnectorPropertyTest {
         assertThatCode(connector::validateInputParameters).doesNotThrowAnyException();
     }
 
-    @Property
+    @Property(tries = 50)
     void timeoutPositiveOnly(@ForAll("positiveTimeouts") int timeout) {
         var connector = new SendMessageConnector();
         var inputs = validInputs();
@@ -166,7 +166,7 @@ class SendMessageConnectorPropertyTest {
         assertThatCode(connector::validateInputParameters).doesNotThrowAnyException();
     }
 
-    @Property
+    @Property(tries = 50)
     void defaultParseModeIsHTML(@ForAll("validBotTokens") String token) {
         var connector = new SendMessageConnector();
         var inputs = new HashMap<String, Object>();
@@ -177,7 +177,7 @@ class SendMessageConnectorPropertyTest {
         assertThatCode(connector::validateInputParameters).doesNotThrowAnyException();
     }
 
-    @Property
+    @Property(tries = 50)
     void stringTimeoutIsParsed(@ForAll @IntRange(min = 1, max = 300_000) int timeout) {
         var connector = new SendMessageConnector();
         var inputs = validInputs();
