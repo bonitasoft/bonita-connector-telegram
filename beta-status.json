@@ -1,0 +1,9 @@
+{
+  "version": "1.0.0-beta.1",
+  "operations": {
+    "telegram-send-message": { "status": "untested", "testedBy": null, "testedDate": null },
+    "telegram-send-document": { "status": "untested", "testedBy": null, "testedDate": null },
+    "telegram-send-photo": { "status": "untested", "testedBy": null, "testedDate": null },
+    "telegram-pin-message": { "status": "untested", "testedBy": null, "testedDate": null }
+  }
+}

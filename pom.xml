@@ -5,129 +5,146 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.bonitasoft.connectors</groupId>
-    <artifactId>bonita-connector-CHANGE_ME</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <artifactId>bonita-connector-telegram</artifactId>
+    <version>1.0.0-beta.1</version>
     <packaging>jar</packaging>
 
-    <name>Bonita Connector - CHANGE_ME</name>
-    <description>CHANGE_ME - A connector for the Bonita platform.</description>
-    <url>https://github.com/bonitasoft/bonita-connector-CHANGE_ME</url>
+    <name>Bonita Connector - Telegram</name>
+    <description>Telegram Bot API connector for the Bonita platform.</description>
+    <url>https://github.com/bonitasoft/bonita-connector-telegram</url>
 
-    <licenses>
-        <license>
-            <name>GNU General Public License v2.0</name>
-            <url>https://www.gnu.org/licenses/old-licenses/gpl-2.0.html</url>
-        </license>
-    </licenses>
-
-    <developers>
-        <developer>
-            <organization>Bonitasoft S.A.</organization>
-            <organizationUrl>https://www.bonitasoft.com</organizationUrl>
-        </developer>
-    </developers>
-
+    <licenses><license><name>GNU General Public License v2.0</name><url>https://www.gnu.org/licenses/old-licenses/gpl-2.0.html</url></license></licenses>
+    <developers><developer><organization>Bonitasoft S.A.</organization><organizationUrl>https://www.bonitasoft.com</organizationUrl></developer></developers>
     <scm>
-        <connection>scm:git:git://github.com/bonitasoft/bonita-connector-CHANGE_ME.git</connection>
-        <developerConnection>scm:git:ssh://github.com:bonitasoft/bonita-connector-CHANGE_ME.git</developerConnection>
-        <url>https://github.com/bonitasoft/bonita-connector-CHANGE_ME</url>
+        <connection>scm:git:git://github.com/bonitasoft/bonita-connector-telegram.git</connection>
+        <developerConnection>scm:git:ssh://github.com:bonitasoft/bonita-connector-telegram.git</developerConnection>
+        <url>https://github.com/bonitasoft/bonita-connector-telegram</url>
     </scm>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.source>17</maven.compiler.source>
-        <maven.compiler.target>17</maven.compiler.target>
+        <maven.compiler.release>17</maven.compiler.release>
         <bonita.runtime.version>10.2.0</bonita.runtime.version>
+        <jackson.version>2.17.2</jackson.version>
 
-        <!-- Connector definition properties -->
-        <connector.definition.id>${project.artifactId}</connector.definition.id>
-        <connector.definition.version>1.0.0</connector.definition.version>
+        <telegram.send-message.def.id>telegram-send-message</telegram.send-message.def.id>
+        <telegram.send-message.def.version>1.0.0</telegram.send-message.def.version>
+        <telegram.send-message.impl.id>telegram-send-message-impl</telegram.send-message.impl.id>
+        <telegram.send-message.impl.version>${project.version}</telegram.send-message.impl.version>
+        <telegram.send-message.main-class>com.bonitasoft.connectors.telegram.SendMessageConnector</telegram.send-message.main-class>
+
+        <telegram.send-document.def.id>telegram-send-document</telegram.send-document.def.id>
+        <telegram.send-document.def.version>1.0.0</telegram.send-document.def.version>
+        <telegram.send-document.impl.id>telegram-send-document-impl</telegram.send-document.impl.id>
+        <telegram.send-document.impl.version>${project.version}</telegram.send-document.impl.version>
+        <telegram.send-document.main-class>com.bonitasoft.connectors.telegram.SendDocumentConnector</telegram.send-document.main-class>
+
+        <telegram.send-photo.def.id>telegram-send-photo</telegram.send-photo.def.id>
+        <telegram.send-photo.def.version>1.0.0</telegram.send-photo.def.version>
+        <telegram.send-photo.impl.id>telegram-send-photo-impl</telegram.send-photo.impl.id>
+        <telegram.send-photo.impl.version>${project.version}</telegram.send-photo.impl.version>
+        <telegram.send-photo.main-class>com.bonitasoft.connectors.telegram.SendPhotoConnector</telegram.send-photo.main-class>
+
+        <telegram.pin-message.def.id>telegram-pin-message</telegram.pin-message.def.id>
+        <telegram.pin-message.def.version>1.0.0</telegram.pin-message.def.version>
+        <telegram.pin-message.impl.id>telegram-pin-message-impl</telegram.pin-message.impl.id>
+        <telegram.pin-message.impl.version>${project.version}</telegram.pin-message.impl.version>
+        <telegram.pin-message.main-class>com.bonitasoft.connectors.telegram.PinMessageConnector</telegram.pin-message.main-class>
+
+        <testcontainers.version>1.19.6</testcontainers.version>
+        <bonita-java-client.version>1.0.1</bonita-java-client.version>
+        <awaitility.version>4.2.0</awaitility.version>
     </properties>
 
     <dependencies>
+        <dependency><groupId>org.bonitasoft.engine</groupId><artifactId>bonita-common</artifactId><version>${bonita.runtime.version}</version><scope>provided</scope></dependency>
+        <dependency><groupId>com.fasterxml.jackson.core</groupId><artifactId>jackson-databind</artifactId><version>${jackson.version}</version><scope>provided</scope></dependency>
+        <dependency><groupId>org.projectlombok</groupId><artifactId>lombok</artifactId><version>1.18.30</version><scope>provided</scope></dependency>
+        <dependency><groupId>org.slf4j</groupId><artifactId>slf4j-api</artifactId><version>2.0.9</version><scope>provided</scope></dependency>
+        <dependency><groupId>org.junit.jupiter</groupId><artifactId>junit-jupiter</artifactId><version>5.11.4</version><scope>test</scope></dependency>
+        <dependency><groupId>org.assertj</groupId><artifactId>assertj-core</artifactId><version>3.27.3</version><scope>test</scope></dependency>
+        <dependency><groupId>org.mockito</groupId><artifactId>mockito-core</artifactId><version>5.15.2</version><scope>test</scope></dependency>
+        <dependency><groupId>org.mockito</groupId><artifactId>mockito-junit-jupiter</artifactId><version>5.15.2</version><scope>test</scope></dependency>
+        <dependency><groupId>net.jqwik</groupId><artifactId>jqwik</artifactId><version>1.8.4</version><scope>test</scope></dependency>
+        <dependency><groupId>com.github.tomakehurst</groupId><artifactId>wiremock-jre8</artifactId><version>2.35.2</version><scope>test</scope></dependency>
         <dependency>
-            <groupId>org.bonitasoft.runtime</groupId>
-            <artifactId>bonita-common</artifactId>
-            <version>${bonita.runtime.version}</version>
-            <scope>provided</scope>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>testcontainers</artifactId>
+            <version>${testcontainers.version}</version>
+            <scope>test</scope>
         </dependency>
-
-        <!-- Test dependencies -->
         <dependency>
-            <groupId>org.junit.jupiter</groupId>
+            <groupId>org.testcontainers</groupId>
             <artifactId>junit-jupiter</artifactId>
-            <version>5.11.4</version>
+            <version>${testcontainers.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.assertj</groupId>
-            <artifactId>assertj-core</artifactId>
-            <version>3.27.3</version>
+            <groupId>org.bonitasoft.web</groupId>
+            <artifactId>bonita-java-client</artifactId>
+            <version>${bonita-java-client.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.mockito</groupId>
-            <artifactId>mockito-core</artifactId>
-            <version>5.15.2</version>
+            <groupId>org.awaitility</groupId>
+            <artifactId>awaitility</artifactId>
+            <version>${awaitility.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
 
     <build>
+        <defaultGoal>verify</defaultGoal>
         <resources>
-            <resource>
-                <directory>src/main/resources-filtered</directory>
-                <filtering>true</filtering>
-            </resource>
-            <resource>
-                <directory>src/main/resources</directory>
-                <filtering>false</filtering>
-            </resource>
+            <resource><directory>src/main/resources-filtered</directory><filtering>true</filtering></resource>
+            <resource><directory>src/main/resources</directory><filtering>false</filtering></resource>
         </resources>
+        <pluginManagement><plugins>
+            <plugin><groupId>org.apache.maven.plugins</groupId><artifactId>maven-compiler-plugin</artifactId><version>3.13.0</version>
+                <configuration><release>${maven.compiler.release}</release>
+                    <annotationProcessorPaths><path><groupId>org.projectlombok</groupId><artifactId>lombok</artifactId><version>1.18.30</version></path></annotationProcessorPaths>
+                </configuration></plugin>
+            <plugin><groupId>org.codehaus.gmavenplus</groupId><artifactId>gmavenplus-plugin</artifactId><version>3.0.2</version>
+                <dependencies><dependency><groupId>org.apache.groovy</groupId><artifactId>groovy</artifactId><version>4.0.15</version></dependency></dependencies></plugin>
+        </plugins></pluginManagement>
         <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-assembly-plugin</artifactId>
-                <version>3.7.1</version>
+            <plugin><groupId>org.apache.maven.plugins</groupId><artifactId>maven-compiler-plugin</artifactId></plugin>
+            <plugin><groupId>org.codehaus.gmavenplus</groupId><artifactId>gmavenplus-plugin</artifactId>
+                <executions><execution><id>gen-deps</id><phase>generate-resources</phase><goals><goal>execute</goal></goals>
+                    <configuration><scripts><script>file:///${project.basedir}/src/script/dependencies-as-var.groovy</script></scripts></configuration>
+                </execution></executions></plugin>
+            <plugin><groupId>org.apache.maven.plugins</groupId><artifactId>maven-assembly-plugin</artifactId><version>3.7.1</version>
+                <executions><execution><id>pkg</id><phase>package</phase><goals><goal>single</goal></goals>
+                    <configuration><descriptors>
+                        <descriptor>src/assembly/all-assembly.xml</descriptor>
+                        <descriptor>src/assembly/send-message-assembly.xml</descriptor>
+                        <descriptor>src/assembly/send-document-assembly.xml</descriptor>
+                        <descriptor>src/assembly/send-photo-assembly.xml</descriptor>
+                        <descriptor>src/assembly/pin-message-assembly.xml</descriptor>
+                    </descriptors></configuration></execution></executions></plugin>
+            <plugin><groupId>org.jacoco</groupId><artifactId>jacoco-maven-plugin</artifactId><version>0.8.12</version>
                 <executions>
-                    <execution>
-                        <id>package-connector</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>single</goal>
-                        </goals>
-                        <configuration>
-                            <descriptors>
-                                <descriptor>src/assembly/connector-assembly.xml</descriptor>
-                            </descriptors>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
+                    <execution><goals><goal>prepare-agent</goal></goals></execution>
+                    <execution><id>report</id><phase>test</phase><goals><goal>report</goal></goals></execution>
+                    <execution><id>check</id><phase>verify</phase><goals><goal>check</goal></goals>
+                        <configuration><rules><rule><element>BUNDLE</element><limits>
+                            <limit><counter>LINE</counter><value>COVEREDRATIO</value><minimum>0.85</minimum></limit>
+                            <limit><counter>BRANCH</counter><value>COVEREDRATIO</value><minimum>0.25</minimum></limit>
+                        </limits></rule></rules></configuration></execution>
+                </executions></plugin>
+            <plugin><groupId>org.apache.maven.plugins</groupId><artifactId>maven-surefire-plugin</artifactId><version>3.5.2</version></plugin>
+            <plugin><groupId>org.apache.maven.plugins</groupId><artifactId>maven-failsafe-plugin</artifactId><version>3.5.2</version>
+                <executions><execution><goals><goal>integration-test</goal><goal>verify</goal></goals></execution></executions></plugin>
         </plugins>
     </build>
-
+    <repositories><repository><id>bonitasoft-releases</id><url>https://bonitasoft.jfrog.io/artifactory/maven</url></repository></repositories>
     <profiles>
         <profile>
             <id>deploy</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-gpg-plugin</artifactId>
-                        <version>3.2.7</version>
-                        <executions>
-                            <execution>
-                                <id>sign-artifacts</id>
-                                <phase>verify</phase>
-                                <goals>
-                                    <goal>sign</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
+            <build><plugins>
+                <plugin><groupId>org.apache.maven.plugins</groupId><artifactId>maven-gpg-plugin</artifactId><version>3.2.7</version>
+                    <executions><execution><id>sign-artifacts</id><phase>verify</phase><goals><goal>sign</goal></goals></execution></executions></plugin>
+            </plugins></build>
         </profile>
     </profiles>
 </project>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definition:ConnectorDefinition xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:definition="http://www.bonitasoft.org/ns/connector/definition/6.1"
+    id="${telegram.pin-message.def.id}" version="${telegram.pin-message.def.version}">
+    <icon>telegram.png</icon>
+    <category icon="telegram.png" id="Telegram Bot"/>
+    <input name="botToken" type="java.lang.String" mandatory="true"/>
+    <input name="baseUrl" type="java.lang.String" mandatory="false" defaultValue="https://api.telegram.org"/>
+    <input name="connectTimeout" type="java.lang.Integer" mandatory="false" defaultValue="30000"/>
+    <input name="readTimeout" type="java.lang.Integer" mandatory="false" defaultValue="60000"/>
+    <input name="chatId" type="java.lang.String" mandatory="true"/>
+    <input name="messageId" type="java.lang.Long" mandatory="true"/>
+    <input name="disableNotification" type="java.lang.Boolean" mandatory="false" defaultValue="false"/>
+    <output name="pinned" type="java.lang.Boolean"/>
+    <output name="success" type="java.lang.Boolean"/>
+    <output name="errorMessage" type="java.lang.String"/>
+    <page id="connectionPage">
+        <widget xsi:type="definition:Password" id="botTokenWidget" inputName="botToken"/>
+        <widget xsi:type="definition:Text" id="baseUrlWidget" inputName="baseUrl"/>
+        <widget xsi:type="definition:Text" id="connectTimeoutWidget" inputName="connectTimeout"/>
+        <widget xsi:type="definition:Text" id="readTimeoutWidget" inputName="readTimeout"/>
+    </page>
+    <page id="operationPage">
+        <widget xsi:type="definition:Text" id="chatIdWidget" inputName="chatId"/>
+        <widget xsi:type="definition:Text" id="messageIdWidget" inputName="messageId"/>
+        <widget xsi:type="definition:Checkbox" id="disableNotificationWidget" inputName="disableNotification"/>
+    </page>
+</definition:ConnectorDefinition>
