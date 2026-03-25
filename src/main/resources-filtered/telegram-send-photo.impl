@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <implementation:connectorImplementation xmlns:implementation="http://www.bonitasoft.org/ns/connector/implementation/6.0">
-    <implementationId>${telegram.send-photo.impl.id}</implementationId>
-    <implementationVersion>${telegram.send-photo.impl.version}</implementationVersion>
-    <definitionId>${telegram.send-photo.def.id}</definitionId>
-    <definitionVersion>${telegram.send-photo.def.version}</definitionVersion>
-    <implementationClassname>${telegram.send-photo.main-class}</implementationClassname>
+    <implementationId>${telegram-send-photo.impl.id}</implementationId>
+    <implementationVersion>${telegram-send-photo.impl.version}</implementationVersion>
+    <definitionId>${telegram-send-photo.def.id}</definitionId>
+    <definitionVersion>${telegram-send-photo.def.version}</definitionVersion>
+    <implementationClassname>${telegram-send-photo.main-class}</implementationClassname>
     <hasSources>false</hasSources>
     <description>Telegram Send Photo connector implementation</description>
     ${connector-dependencies}

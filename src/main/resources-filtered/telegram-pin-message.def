@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definition:ConnectorDefinition xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:definition="http://www.bonitasoft.org/ns/connector/definition/6.1"
-    id="${telegram.pin-message.def.id}" version="${telegram.pin-message.def.version}">
+    id="${telegram-pin-message.def.id}" version="${telegram-pin-message.def.version}">
     <icon>telegram.png</icon>
     <category icon="telegram.png" id="Telegram Bot"/>
     <input name="botToken" type="java.lang.String" mandatory="true"/>
