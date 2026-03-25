@@ -111,4 +111,124 @@ class PinMessageConnectorTest {
         assertThat(TestHelper.getOutputs(connector).get("success")).isEqualTo(false);
         assertThat((String) TestHelper.getOutputs(connector).get("errorMessage")).contains("Unexpected error");
     }
+
+    @Test void should_fail_when_botToken_missing() {
+        Map<String, Object> m = validInputs(); m.remove("botToken");
+        connector.setInputParameters(m);
+        assertThatThrownBy(() -> connector.validateInputParameters()).isInstanceOf(ConnectorValidationException.class);
+    }
+
+    @Test void should_handle_server_error_500() throws Exception {
+        connector.setInputParameters(validInputs());
+        connector.validateInputParameters();
+        injectMockClient();
+        when(mockClient.pinMessage(any())).thenThrow(new TelegramException("Internal Server Error", 500, true));
+        connector.executeBusinessLogic();
+        assertThat(TestHelper.getOutputs(connector).get("success")).isEqualTo(false);
+    }
+
+    @Test void should_populate_all_output_fields_on_success() throws Exception {
+        connector.setInputParameters(validInputs());
+        connector.validateInputParameters();
+        injectMockClient();
+        when(mockClient.pinMessage(any())).thenReturn(new PinResult(true));
+        connector.executeBusinessLogic();
+        var outputs = TestHelper.getOutputs(connector);
+        assertThat(outputs.get("success")).isEqualTo(true);
+        assertThat(outputs.get("errorMessage")).isEqualTo("");
+        assertThat(outputs.get("pinned")).isEqualTo(true);
+    }
+
+    @Test void should_populate_all_output_fields_on_error() throws Exception {
+        connector.setInputParameters(validInputs());
+        connector.validateInputParameters();
+        injectMockClient();
+        when(mockClient.pinMessage(any())).thenThrow(new TelegramException("Not enough rights", 400, false));
+        connector.executeBusinessLogic();
+        var outputs = TestHelper.getOutputs(connector);
+        assertThat(outputs.get("success")).isEqualTo(false);
+        assertThat((String) outputs.get("errorMessage")).isNotEmpty();
+    }
+
+    @Test void should_use_custom_timeouts() throws Exception {
+        Map<String, Object> m = validInputs();
+        m.put("connectTimeout", 5000);
+        m.put("readTimeout", 10000);
+        m.put("disableNotification", true);
+        connector.setInputParameters(m);
+        connector.validateInputParameters();
+        injectMockClient();
+        when(mockClient.pinMessage(any())).thenReturn(new PinResult(true));
+        connector.executeBusinessLogic();
+        assertThat(TestHelper.getOutputs(connector).get("success")).isEqualTo(true);
+    }
+
+    @Test void should_connect_and_disconnect() throws Exception {
+        connector.setInputParameters(validInputs());
+        connector.connect();
+        connector.disconnect();
+    }
+
+    @Test void should_use_custom_baseUrl() throws Exception {
+        Map<String, Object> m = validInputs();
+        m.put("baseUrl", "https://custom-proxy.example.com");
+        connector.setInputParameters(m);
+        connector.validateInputParameters();
+    }
+
+    @Test void should_fail_when_chatId_is_blank() {
+        Map<String, Object> m = validInputs();
+        m.put("chatId", "   ");
+        connector.setInputParameters(m);
+        assertThatThrownBy(() -> connector.validateInputParameters()).isInstanceOf(ConnectorValidationException.class);
+    }
+
+    @Test void should_fail_when_botToken_is_blank() {
+        Map<String, Object> m = validInputs();
+        m.put("botToken", "   ");
+        connector.setInputParameters(m);
+        assertThatThrownBy(() -> connector.validateInputParameters()).isInstanceOf(ConnectorValidationException.class);
+    }
+
+    @Test void should_accept_negative_chatId_for_groups() throws Exception {
+        Map<String, Object> m = validInputs();
+        m.put("chatId", "-1001999999999");
+        connector.setInputParameters(m);
+        connector.validateInputParameters();
+    }
+
+    @Test void should_accept_null_disableNotification() throws Exception {
+        Map<String, Object> m = validInputs();
+        m.put("disableNotification", null);
+        connector.setInputParameters(m);
+        connector.validateInputParameters();
+    }
+
+    @Test void should_parse_string_timeout() throws Exception {
+        Map<String, Object> m = validInputs();
+        m.put("connectTimeout", "5000");
+        connector.setInputParameters(m);
+        connector.validateInputParameters();
+    }
+
+    @Test void should_use_default_for_invalid_timeout() throws Exception {
+        Map<String, Object> m = validInputs();
+        m.put("connectTimeout", "not-a-number");
+        connector.setInputParameters(m);
+        connector.validateInputParameters();
+    }
+
+    @Test void should_use_boolean_string_disableNotification() throws Exception {
+        Map<String, Object> m = validInputs();
+        m.put("disableNotification", "true");
+        connector.setInputParameters(m);
+        connector.validateInputParameters();
+    }
+
+    @Test void should_accept_large_messageId() throws Exception {
+        Map<String, Object> m = validInputs();
+        m.put("messageId", 999999999L);
+        connector.setInputParameters(m);
+        connector.validateInputParameters();
+    }
 }

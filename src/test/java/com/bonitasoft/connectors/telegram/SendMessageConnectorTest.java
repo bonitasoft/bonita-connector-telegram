@@ -167,4 +167,75 @@ class SendMessageConnectorTest {
         connector.executeBusinessLogic();
         assertThat(TestHelper.getOutputs(connector).get("success")).isEqualTo(true);
     }
+
+    @Test void should_fail_when_text_is_blank() {
+        Map<String, Object> m = validInputs();
+        m.put("text", "   ");
+        connector.setInputParameters(m);
+        assertThatThrownBy(() -> connector.validateInputParameters()).isInstanceOf(ConnectorValidationException.class);
+    }
+
+    @Test void should_fail_when_chatId_is_blank() {
+        Map<String, Object> m = validInputs();
+        m.put("chatId", "   ");
+        connector.setInputParameters(m);
+        assertThatThrownBy(() -> connector.validateInputParameters()).isInstanceOf(ConnectorValidationException.class);
+    }
+
+    @Test void should_fail_when_botToken_is_blank() {
+        Map<String, Object> m = validInputs();
+        m.put("botToken", "   ");
+        connector.setInputParameters(m);
+        assertThatThrownBy(() -> connector.validateInputParameters()).isInstanceOf(ConnectorValidationException.class);
+    }
+
+    @Test void should_accept_text_exactly_4096_chars() throws Exception {
+        Map<String, Object> m = validInputs();
+        m.put("text", "A".repeat(4096));
+        connector.setInputParameters(m);
+        // Should not throw
+        connector.validateInputParameters();
+    }
+
+    @Test void should_accept_markdown_parseMode() throws Exception {
+        Map<String, Object> m = validInputs();
+        m.put("parseMode", "Markdown");
+        connector.setInputParameters(m);
+        connector.validateInputParameters();
+    }
+
+    @Test void should_accept_markdownV2_parseMode() throws Exception {
+        Map<String, Object> m = validInputs();
+        m.put("parseMode", "MarkdownV2");
+        connector.setInputParameters(m);
+        connector.validateInputParameters();
+    }
+
+    @Test void should_accept_negative_chatId_for_groups() throws Exception {
+        Map<String, Object> m = validInputs();
+        m.put("chatId", "-1001234567890");
+        connector.setInputParameters(m);
+        connector.validateInputParameters();
+    }
+
+    @Test void should_accept_positive_chatId_for_private() throws Exception {
+        Map<String, Object> m = validInputs();
+        m.put("chatId", "123456789");
+        connector.setInputParameters(m);
+        connector.validateInputParameters();
+    }
+
+    @Test void should_accept_null_disableNotification() throws Exception {
+        Map<String, Object> m = validInputs();
+        m.put("disableNotification", null);
+        connector.setInputParameters(m);
+        connector.validateInputParameters();
+    }
+
+    @Test void should_accept_null_parseMode() throws Exception {
+        Map<String, Object> m = validInputs();
+        m.put("parseMode", null);
+        connector.setInputParameters(m);
+        connector.validateInputParameters();
+    }
 }
