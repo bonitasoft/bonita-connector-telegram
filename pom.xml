@@ -144,6 +144,13 @@
                         <param>com.bonitasoft.connectors.telegram.TelegramConfiguration</param>
                         <param>com.bonitasoft.connectors.telegram.TelegramConfiguration$*</param>
                     </excludedClasses>
+                    <excludedTestClasses>
+                        <param>com.bonitasoft.connectors.telegram.*IntegrationTest</param>
+                        <param>com.bonitasoft.connectors.telegram.*IT</param>
+                        <param>com.bonitasoft.connectors.telegram.*PropertyTest</param>
+                        <param>com.bonitasoft.connectors.telegram.ConnectorTestToolkit</param>
+                        <param>com.bonitasoft.connectors.telegram.TestHelper</param>
+                    </excludedTestClasses>
                     <avoidCallsTo>
                         <avoidCallsTo>org.slf4j</avoidCallsTo>
                         <avoidCallsTo>lombok</avoidCallsTo>

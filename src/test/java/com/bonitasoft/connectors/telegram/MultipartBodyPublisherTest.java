@@ -76,6 +76,20 @@ class MultipartBodyPublisherTest {
         assertThat(content).contains("Content-Disposition: form-data; name=\"document\"; filename=\"test.pdf\"");
         assertThat(content).contains("Content-Type: application/octet-stream");
         assertThat(content).contains("file-content");
+        // Verify the CRLF footer after file content is present (kills arraycopy mutant)
+        assertThat(content).contains("file-content\r\n");
+    }
+
+    @Test
+    void should_build_file_part_with_no_null_bytes() {
+        // When the footer arraycopy is removed by mutant, the combined array has null bytes
+        byte[] fileContent = "test-data".getBytes();
+        MultipartBodyPublisher publisher = MultipartBodyPublisher.newBuilder()
+                .filePart("doc", "f.txt", fileContent)
+                .build();
+        String content = readBody(publisher.toBodyPublisher());
+        // Verify no null bytes in the content (would be present if arraycopy skipped)
+        assertThat(content).doesNotContain("\0");
     }
 
     private String readBody(HttpRequest.BodyPublisher pub) {

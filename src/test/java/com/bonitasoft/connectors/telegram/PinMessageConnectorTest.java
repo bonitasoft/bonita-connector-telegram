@@ -231,4 +231,34 @@ class PinMessageConnectorTest {
         connector.setInputParameters(m);
         connector.validateInputParameters();
     }
+
+    // --- Mutant killer: buildConfiguration baseUrl default ---
+
+    @Test void should_use_default_baseUrl_when_null() throws Exception {
+        Map<String, Object> m = validInputs();
+        m.put("baseUrl", null);
+        connector.setInputParameters(m);
+        injectMockClient();
+        when(mockClient.pinMessage(any())).thenAnswer(inv -> {
+            TelegramConfiguration cfg = inv.getArgument(0);
+            assertThat(cfg.getBaseUrl()).isEqualTo("https://api.telegram.org");
+            return new PinResult(true);
+        });
+        connector.executeBusinessLogic();
+        assertThat(TestHelper.getOutputs(connector).get("success")).isEqualTo(true);
+    }
+
+    @Test void should_use_custom_baseUrl_when_set() throws Exception {
+        Map<String, Object> m = validInputs();
+        m.put("baseUrl", "https://custom.example.com");
+        connector.setInputParameters(m);
+        injectMockClient();
+        when(mockClient.pinMessage(any())).thenAnswer(inv -> {
+            TelegramConfiguration cfg = inv.getArgument(0);
+            assertThat(cfg.getBaseUrl()).isEqualTo("https://custom.example.com");
+            return new PinResult(true);
+        });
+        connector.executeBusinessLogic();
+        assertThat(TestHelper.getOutputs(connector).get("success")).isEqualTo(true);
+    }
 }

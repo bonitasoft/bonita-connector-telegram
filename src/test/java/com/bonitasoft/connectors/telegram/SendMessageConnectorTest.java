@@ -238,4 +238,84 @@ class SendMessageConnectorTest {
         connector.setInputParameters(m);
         connector.validateInputParameters();
     }
+
+    // --- Mutant killers: buildConfiguration baseUrl/parseMode defaults ---
+
+    @Test void should_use_default_baseUrl_when_null() throws Exception {
+        Map<String, Object> m = validInputs();
+        m.put("baseUrl", null);
+        m.put("parseMode", null);
+        connector.setInputParameters(m);
+        injectMockClient();
+        when(mockClient.sendMessage(any())).thenAnswer(inv -> {
+            TelegramConfiguration cfg = inv.getArgument(0);
+            // Verify defaults were applied (not null)
+            assertThat(cfg.getBaseUrl()).isEqualTo("https://api.telegram.org");
+            assertThat(cfg.getParseMode()).isEqualTo("HTML");
+            return new TelegramMessage(90L, null, "-1001234567890");
+        });
+        connector.executeBusinessLogic();
+        assertThat(TestHelper.getOutputs(connector).get("success")).isEqualTo(true);
+    }
+
+    @Test void should_use_custom_baseUrl_when_set() throws Exception {
+        Map<String, Object> m = validInputs();
+        m.put("baseUrl", "https://custom.example.com");
+        m.put("parseMode", "MarkdownV2");
+        connector.setInputParameters(m);
+        injectMockClient();
+        when(mockClient.sendMessage(any())).thenAnswer(inv -> {
+            TelegramConfiguration cfg = inv.getArgument(0);
+            assertThat(cfg.getBaseUrl()).isEqualTo("https://custom.example.com");
+            assertThat(cfg.getParseMode()).isEqualTo("MarkdownV2");
+            return new TelegramMessage(91L, null, "-1001234567890");
+        });
+        connector.executeBusinessLogic();
+        assertThat(TestHelper.getOutputs(connector).get("success")).isEqualTo(true);
+    }
+
+    // --- Mutant killers: resolveToken fallback branches ---
+
+    @Test void should_resolve_token_from_system_property() throws Exception {
+        try {
+            System.setProperty("telegram.bot.token", "sys-prop-token");
+            Map<String, Object> m = validInputs();
+            m.remove("botToken"); // no direct token
+            connector.setInputParameters(m);
+            connector.validateInputParameters(); // should not throw, resolves from sys prop
+        } finally {
+            System.clearProperty("telegram.bot.token");
+        }
+    }
+
+    @Test void should_resolve_token_from_system_property_when_botToken_blank() throws Exception {
+        try {
+            System.setProperty("telegram.bot.token", "sys-prop-token");
+            Map<String, Object> m = validInputs();
+            m.put("botToken", "   "); // blank token
+            connector.setInputParameters(m);
+            connector.validateInputParameters(); // should fall through to sys prop
+        } finally {
+            System.clearProperty("telegram.bot.token");
+        }
+    }
+
+    @Test void should_fail_when_no_token_anywhere() {
+        try {
+            System.clearProperty("telegram.bot.token");
+            Map<String, Object> m = validInputs();
+            m.remove("botToken");
+            connector.setInputParameters(m);
+            // This will only fail if env var TELEGRAM_BOT_TOKEN is also not set
+            // which is the expected case in test environments
+            String envToken = System.getenv("TELEGRAM_BOT_TOKEN");
+            if (envToken == null || envToken.isBlank()) {
+                assertThatThrownBy(() -> connector.validateInputParameters())
+                        .isInstanceOf(ConnectorValidationException.class)
+                        .hasMessageContaining("Bot token not found");
+            }
+        } finally {
+            System.clearProperty("telegram.bot.token");
+        }
+    }
 }
