@@ -176,6 +176,10 @@
             <plugin><groupId>org.apache.maven.plugins</groupId><artifactId>maven-failsafe-plugin</artifactId><version>3.5.2</version>
                 <executions><execution><goals><goal>integration-test</goal><goal>verify</goal></goals></execution></executions></plugin>
             <plugin><groupId>org.sonatype.central</groupId><artifactId>central-publishing-maven-plugin</artifactId></plugin>
+            <plugin><groupId>org.apache.maven.plugins</groupId><artifactId>maven-source-plugin</artifactId><version>3.3.0</version>
+                <executions><execution><id>attach-sources</id><goals><goal>jar-no-fork</goal></goals></execution></executions></plugin>
+            <plugin><groupId>org.apache.maven.plugins</groupId><artifactId>maven-javadoc-plugin</artifactId><version>3.7.0</version>
+                <executions><execution><id>attach-javadocs</id><goals><goal>jar</goal></goals></execution></executions></plugin>
         </plugins>
     </build>
     <repositories><repository><id>bonitasoft-releases</id><url>https://bonitasoft.jfrog.io/artifactory/maven</url></repository></repositories>
