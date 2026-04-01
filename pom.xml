@@ -6,7 +6,7 @@
 
     <groupId>org.bonitasoft.connectors</groupId>
     <artifactId>bonita-connector-telegram</artifactId>
-    <version>1.0.0-beta.2</version>
+    <version>1.0.0-beta.1</version>
     <packaging>jar</packaging>
 
     <name>Bonita Connector - Telegram</name>
@@ -54,6 +54,7 @@
         <testcontainers.version>1.19.6</testcontainers.version>
         <bonita-java-client.version>1.0.1</bonita-java-client.version>
         <awaitility.version>4.2.0</awaitility.version>
+        <central-maven-plugin.version>0.8.0</central-maven-plugin.version>
     </properties>
 
     <dependencies>
@@ -106,6 +107,15 @@
                 </configuration></plugin>
             <plugin><groupId>org.codehaus.gmavenplus</groupId><artifactId>gmavenplus-plugin</artifactId><version>3.0.2</version>
                 <dependencies><dependency><groupId>org.apache.groovy</groupId><artifactId>groovy</artifactId><version>4.0.15</version></dependency></dependencies></plugin>
+            <plugin>
+                <groupId>org.sonatype.central</groupId>
+                <artifactId>central-publishing-maven-plugin</artifactId>
+                <version>${central-maven-plugin.version}</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <autoPublish>true</autoPublish>
+                </configuration>
+            </plugin>
         </plugins></pluginManagement>
         <plugins>
             <plugin><groupId>org.apache.maven.plugins</groupId><artifactId>maven-compiler-plugin</artifactId></plugin>
@@ -165,6 +175,7 @@
             </plugin>
             <plugin><groupId>org.apache.maven.plugins</groupId><artifactId>maven-failsafe-plugin</artifactId><version>3.5.2</version>
                 <executions><execution><goals><goal>integration-test</goal><goal>verify</goal></goals></execution></executions></plugin>
+            <plugin><groupId>org.sonatype.central</groupId><artifactId>central-publishing-maven-plugin</artifactId></plugin>
         </plugins>
     </build>
     <repositories><repository><id>bonitasoft-releases</id><url>https://bonitasoft.jfrog.io/artifactory/maven</url></repository></repositories>
