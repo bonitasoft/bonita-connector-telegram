@@ -1,10 +1,26 @@
 {
   "connector": "bonita-connector-telegram",
-  "currentVersion": "1.0.0-beta.1",
+  "currentVersion": "1.0.0-beta.2",
   "operations": {
-    "telegram-send-message": { "status": "untested", "issue": null, "version": null },
-    "telegram-send-document": { "status": "untested", "issue": null, "version": null },
-    "telegram-send-photo": { "status": "untested", "issue": null, "version": null },
-    "telegram-pin-message": { "status": "untested", "issue": null, "version": null }
+    "telegram-send-message": {
+      "status": "untested",
+      "issue": null,
+      "version": null
+    },
+    "telegram-send-document": {
+      "status": "untested",
+      "issue": null,
+      "version": null
+    },
+    "telegram-send-photo": {
+      "status": "untested",
+      "issue": null,
+      "version": null
+    },
+    "telegram-pin-message": {
+      "status": "untested",
+      "issue": null,
+      "version": null
+    }
   }
 }
