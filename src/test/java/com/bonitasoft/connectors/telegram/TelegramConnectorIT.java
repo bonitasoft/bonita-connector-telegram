@@ -58,7 +58,7 @@ class TelegramConnectorIT {
         Map<String, Object> inputs = new HashMap<>();
         inputs.put("botToken", botToken);
         inputs.put("chatId", chatId);
-        inputs.put("photoUrl", "https://www.bonitasoft.com/favicon.ico");
+        inputs.put("photoUrl", "https://www.ofelia.com/favicon.ico");
         inputs.put("caption", "IT - Send Photo Test");
         inputs.put("disableNotification", true);
 

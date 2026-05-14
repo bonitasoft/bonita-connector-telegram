@@ -1,6 +1,6 @@
 # Bonita Telegram Connector
 
-Telegram Bot API connector for the [Bonita](https://www.bonitasoft.com) BPM platform. Send messages, documents, photos, and pin messages in Telegram chats directly from your Bonita processes.
+Telegram Bot API connector for the [Bonita](https://www.ofelia.com) BPM platform. Send messages, documents, photos, and pin messages in Telegram chats directly from your Bonita processes.
 
 ## Operations
 
