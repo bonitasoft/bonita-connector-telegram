@@ -25,7 +25,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.release>17</maven.compiler.release>
         <bonita.runtime.version>10.2.0</bonita.runtime.version>
-        <jackson.version>2.17.2</jackson.version>
+        <jackson.version>2.22.0</jackson.version>
 
         <telegram-send-message.def.id>telegram-send-message</telegram-send-message.def.id>
         <telegram-send-message.def.version>1.0.0</telegram-send-message.def.version>
